@@ -39,10 +39,10 @@ library(readr)
 ```
 
 ```{r}
-source("./util/SparkFunctions.R")
-source("./util/Consts.R")
-source("./util/FilePaths.R")
-source("./OurWorldInData_Common.R")
+source("SparkFunctions.R")
+source("Consts.R")
+source("FilePaths.R")
+source("OurWorldInData_Common.R")
 ```
 
 Select between USA or Global data

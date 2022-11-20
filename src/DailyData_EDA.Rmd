@@ -38,9 +38,9 @@ library(readr)
 ```
 
 ```{r}
-source("./util/SparkFunctions.R")
-source("./util/Consts.R")
-source("./util/FilePaths.R")
+source("SparkFunctions.R")
+source("Consts.R")
+source("FilePaths.R")
 ```
 
 ```{r}

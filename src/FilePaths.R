@@ -1,4 +1,4 @@
-source('./Consts.R')
+source('Consts.R')
 
 #
 # Get full path to href file

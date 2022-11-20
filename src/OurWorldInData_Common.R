@@ -5,9 +5,8 @@ library(DBI)
 library(assertive)
 library(readr)
 
-source("./SparkFunctions.R")
-source("./Consts.R")
-source("./FilePaths.R")
+source("FilePaths.R")
+source("SparkFunctions.R")
 
 #
 # Load data
