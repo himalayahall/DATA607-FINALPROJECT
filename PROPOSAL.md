@@ -10,11 +10,14 @@ These determinations on supplementary data sets will drive the project analysis.
 ----
 ### Datasets (so far)
 
-We started with the [JHU CSSE Novel Coronavirus (COVID-19) Daily Data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us). After successul extraction of the daily data, we added [JHU CSSE timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series) and [Our World In Data](https://ourworldindata.org/coronavirus) to the data extraction pipeline. 
+1. Started with[JHU CSSE Novel Coronavirus (COVID-19) Daily Data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us)
+2. After successul extraction of the daily data, we added [JHU CSSE timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series)
+3. Finally, added [Our World In Data](https://ourworldindata.org/coronavirus) to the data extraction pipeline 
 
-During this data acquisition journey we built a set of common data extraction scripts/functions that were leveraged across all datasets. 
-
-One issue we came across was with Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). To get around this we implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account which enables higher limits.
+> Milestones:
+> 1. During this data acquisition journey we built a set of common data extraction scripts/functions that were leveraged across all datasets. These include parallel processing, attribute extraction from HTML using Selenium, and Spark cluster interface. See [tech stack](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/PROPOSAL.md#tech-stack-so-far) for details
+> 2. Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). To get around rate limits we implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account which enables higher limits.
+> 3. OWID dataset did not provide latitude/longitude variables which would be handy for map plots. We downloaded a separate dataset with country lat/long and (left-)joined with OWID
 
 ### Tech stack (so far)
 
