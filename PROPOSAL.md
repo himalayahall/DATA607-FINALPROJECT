@@ -15,7 +15,7 @@ These determinations on supplementary data sets will drive the project analysis.
 3. Finally, added [Our World In Data](https://ourworldindata.org/coronavirus) to the data extraction pipeline 
 
 > Milestones:
-> 1. During this data acquisition journey we built a set of common data extraction scripts/functions that were leveraged across all datasets. These include parallel processing, attribute extraction from HTML pages using Selenium, and Spark cluster interface, see [tech stack](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/PROPOSAL.md#tech-stack-so-far)
+> 1. During this data acquisition journey we built a set of common data extraction scripts/functions that were leveraged across all datasets. These include parallel processing, attribute extraction from HTML pages using Selenium, and Spark cluster interface, see [tech stack](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/PROPOSAL.md#tech-stack-so-far) for details
 > 2. Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). To get around rate limits we implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account which enables higher limits.
 > 3. OWID dataset did not provide latitude/longitude variables which would be handy for map plots. We downloaded a separate dataset with country lat/long and (left-)joined with OWID
 
