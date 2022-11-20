@@ -38,12 +38,12 @@ library(readr)
 ```
 
 ```{r}
-source("SparkFunctions.R")
+source("./util/SparkFunctions.R")
+source("./util/Consts.R")
+source("./util/FilePaths.R")
 ```
 
 ```{r}
-source("./Consts.R")
-source("./FilePaths.R")
 source("./DailyData_CleanStatsTable.R")
 ```
 

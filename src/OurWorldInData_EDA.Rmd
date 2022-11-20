@@ -39,10 +39,9 @@ library(readr)
 ```
 
 ```{r}
-source("SparkFunctions.R")
-source("./Consts.R")
-source("./FilePaths.R")
-#source("./OurWorldInData_CleanStatsTable.R")
+source("./util/SparkFunctions.R")
+source("./util/Consts.R")
+source("./util/FilePaths.R")
 source("./OurWorldInData_Common.R")
 ```
 

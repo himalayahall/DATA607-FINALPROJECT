@@ -30,8 +30,8 @@ library(tidyverse)
 ```
 
 ```{r}
-source("./Consts.R")
-source("./FilePaths.R")
+source("./util/Consts.R")
+source("./util/FilePaths.R")
 ```
 
 # Generate list of data to be processed
