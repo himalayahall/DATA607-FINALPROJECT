@@ -36,6 +36,7 @@ ui <- fluidPage(titlePanel("COVID"),
                             "locations",
                             label = h3("Locations group"),
                             choices = unique(covid$location),
+                            inline = TRUE,
                             selected = c(
                                 'United States',
                                 'Great Britain',
@@ -71,7 +72,7 @@ server <- function(input, output) {
                 title = "COVID",
                 subtitle = "2020 - 2023",
                 caption = "source: Our World In Data",
-                y = "Metric"
+                y = input$metric
             ) +
             theme_minimal()
     })
