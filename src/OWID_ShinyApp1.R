@@ -10,11 +10,12 @@ source("OurWorldInData_Common.R", echo = FALSE)
 covid <- LoadDataset(verbose = FALSE)
 glimpse(covid)
 
-ui <- fluidPage(titlePanel("COVID"),
+ui <- fluidPage(titlePanel("COVID Metrics"),
                 
                 sidebarLayout(
                     sidebarPanel(
-                        helpText("COVID Deaths."),
+                        width = 4,
+                        helpText("COVID metrics from Our World In Data"),
                         
                         radioButtons(
                             "metric",
@@ -69,7 +70,7 @@ server <- function(input, output) {
                 date_labels = "%Y"
             ) +
             labs(
-                title = "COVID",
+                title = paste0("COVID - ",  str_replace_all(input$metric, "_", " ")),
                 subtitle = "2020 - 2023",
                 caption = "source: Our World In Data",
                 y = input$metric
