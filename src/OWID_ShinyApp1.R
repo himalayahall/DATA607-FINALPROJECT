@@ -38,14 +38,14 @@ ui <- fluidPage(
     ),
     
     mainPanel(
-      plotOutput("locationPlot")
+      plotlyOutput("locationPlot")
     )
   )
 )
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
     
-    output$locationPlot <- renderPlot({
+    output$locationPlot <- renderPlotly({
             covid |> filter(location %in% input$locations) |>
             arrange(date) |>
             ggplot(aes(
