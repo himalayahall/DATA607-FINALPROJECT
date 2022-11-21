@@ -21,12 +21,13 @@ ui <- fluidPage(titlePanel("COVID"),
                             label = h3("Mertic"),
                             choices = c(
                                 'total_deaths_per_million',
-                                'excess_mortality_cumulative',
-                                'population',
+                                'excess_mortality_cumulative_per_million',
                                 'hosp_patients_per_million',
                                 'total_cases_per_million',
                                 'positive_rate',
-                                'total_vaccinations_per_hundred'
+                                'total_vaccinations_per_hundred',
+                                'population_density',
+                                'gdp_per_capita'
                             ),
                             selected = c('total_deaths_per_million')
                         ),
