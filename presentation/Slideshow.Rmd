@@ -160,6 +160,12 @@ co.mask |> na.omit() |>
 
 ```{r}
 # total excess deaths by avg mask policy
+co.em <- co.mask |>
+  filter(!is.na(excess_mortality_cumulative_per_million)) |>
+  select(1:4,7:10) |>
+  rename(excess = excess_mortality_cumulative_per_million,
+         face = facial_coverings) 
+
 co.em |> na.omit() |>
   group_by(location) |>
   summarize(total_excess = sum(excess), avg_policy = mean(face)) |>
