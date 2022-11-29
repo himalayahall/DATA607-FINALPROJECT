@@ -197,4 +197,3 @@ Does average mask policy predict total excess mortality?
 The null hypothesis, $H_0$ - average mask policy *does not* predict total excess mortality. 
 
 The alternative hypothesis, $H_A$ - average mask policy *does* predict total mortality. 
->>>>>>> a6b88e073b1d38a6c98f2f5866dcf57c6aada88b
