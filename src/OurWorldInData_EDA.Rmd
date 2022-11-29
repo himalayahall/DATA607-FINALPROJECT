@@ -114,10 +114,10 @@ df_latest
 m <- NULL
 leaflet_map <- leaflet::leaflet(df_latest) %>%
     leaflet::addTiles() |>
-    #setView(lng = --2, lat = 54, zoom = 2.1) |>
+    setView(lng = --2, lat = 54, zoom = 2.1) |>
     #addProviderTiles(providers$Stamen.Toner) |>
     #addProviderTiles(providers$CartoDB.Positron) |>
-    # addProviderTiles(providers$Esri.NatGeoWorldMap, options =      # providerTileOptions(opacity = 0.85)) |>
+    addProviderTiles(providers$Esri.NatGeoWorldMap, options =providerTileOptions(opacity = 0.85)) |>
     #addProviderTiles(providers$Stamen.TonerLite) |>
     leaflet::addCircleMarkers(
         lng = ~ Longitude,
