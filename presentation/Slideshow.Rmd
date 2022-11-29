@@ -46,24 +46,32 @@ library(knitr)
 
 -   Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). Implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account for higher limits.
 
--   OWID dataset did not provide latitude/longitude variables which would be handy for map plots. Downloaded a separate dataset with country lat/long and (left-)joined with OWID for plotting on
+-   OWID dataset did not provide latitude/longitude variables. Downloaded a separate dataset with country lat/long and (left) joined with OWID for plotting on map
 
-# Data Exploration - Strategy
+# Shiny - interactive data exploration
 
--   Shiny for interactive data exploration
+![OWID Comprehensive Timeseries](images/SHINY-APP.PNG)
 
--   Leaflet for map displays
+# Leaflet - interactive map visualization
 
--   Spark for data analytics
+![OWID Comprehensive Timeseries](images/LEAFLET-MAP.PNG)
+
+# Spark - distributed (Scalable) query, analytics, ML
+
+![Spark - Query](images/SPARK-DPLYR-SQL.PNG)
+
+![Spark - Executors](images/SPARK-EXECUTORS.PNG)
+
+![Spark - Completed Jobs](images/SPARK-COMPLETED-JOBS.PNG)
 
 # Tech Stack
 
--   **Rselenium**: chosen for it's headless browser capability and getting around potential issues with embedded JavaScript. Used to extract daily data URLs
+-   **Rselenium**: headless browser for getting around embedded JavaScript
 -   **parallel**: chosen for efficiently processing remote data files using a local cluster
 -   **readr**: reading remote/local CSVs
--   **leaflet**: render interactive global map
--   **Spark/sparklr**: proof-of-concept for performing EDAs on large datasets in a Spark cluster. Since cloud hosted Spark services are either fee-based or time-limited we used a local cluster
--   **AWS S3**: we looked into storing datasets on AWS S3 and leveraging Spark's built-in S3 connector. However, S3 storage rate-limits made this impractical (20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests each month)
+-   **Leaflet**: interactive global map
+-   **Spark/sparklr**: proof-of-concept Spark cluster. Cloud hosted Spark services are fee-based or time-limited - used local cluster
+-   **AWS S3**: AWS S3 rate-limits made it impractical (20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests each month)
 
 # Exploratory Data Analysis
 
@@ -190,9 +198,9 @@ boxplot(new_deaths ~ mask_policy, co.new, main="distribution by policy", xlab="m
 
 Does average mask policy predict total excess mortality?
 
-The null hypothesis, $H_0$ - average mask policy *does not* predict total excess mortality. 
+The null hypothesis, $H_0$ - average mask policy *does not* predict total excess mortality.
 
-The alternative hypothesis, $H_A$ - average mask policy *does* predict total mortality. 
+The alternative hypothesis, $H_A$ - average mask policy *does* predict total mortality.
 
 ## Relationship Between Variables
 
@@ -232,13 +240,15 @@ covid.sub2 <- covid.sub1 |>
 
 ggpairs(covid.sub2[, 2:10])
 ```
+
 ## Fitting in a Linear Model
 
 ```{r}
 model.1 <- lm(excess_mortality ~ mask_policy + pop_density + gdp_per_capita, covid.sub2)
 summary(model.1)
 ```
-With an adjusted R-squared of 0.4048, this model only accounts for 40% of the variance in excess mortality. Mask policy also vastly exceeds < 0.05 p-score for significance, so it is not a significant factor. 
+
+With an adjusted R-squared of 0.4048, this model only accounts for 40% of the variance in excess mortality. Mask policy also vastly exceeds \< 0.05 p-score for significance, so it is not a significant factor.
 
 ## Improving the Model
 
@@ -259,4 +269,3 @@ mask <- covid.sub2 |>
 model.2 <- lm(excess_mortality ~ mask_policy, mask)
 plot(model.2)
 ```
-
