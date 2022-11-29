@@ -33,3 +33,12 @@ output:
 - Ran into Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). To get around rate limits we implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account which enables higher limits.
 
 - OWID dataset did not provide latitude/longitude variables which would be handy for map plots. We downloaded a separate dataset with country lat/long and (left-)joined with OWID for plotting on
+
+# Tech Stack
+
+- **Rselenium**: chosen for it's headless browser capability and getting around potential issues with embedded JavaScript. Used to extract daily data URLs
+- **parallel**: chosen for efficiently processing remote data files using a local cluster
+- **readr**: reading remote/local CSVs
+- **leaflet**: render interactive global map
+- **Spark/sparklr**: proof-of-concept for performing EDAs on large datasets in a Spark cluster. Since cloud hosted Spark services are either fee-based or time-limited we used a local cluster
+- **AWS S3**: we looked into storing datasets on AWS S3 and leveraging Spark's built-in S3 connector. However, S3 storage rate-limits made  this impractical (20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests each month)
