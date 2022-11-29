@@ -6,7 +6,36 @@ library(leaflet)
 library(leaflet.extras)
 library(leaflet.providers)
 
-source("OurWorldInData_Common.R", echo = FALSE)
+#
+# Load data
+#
+# Parameters:
+#   verbose: TRUE to print progress
+LoadDataset <- function(verbose = TRUE) {
+    df <- readr::read_csv(file = "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/owid-covid-data.csv", col_names = TRUE)
+    
+    lat_long <- readr::read_csv(file = "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/country_lat_long.csv", col_names = TRUE)
+    lat_long <- rename(lat_long, Longitude = `Longitude (average)`)
+    lat_long <- rename(lat_long, Latitude = `Latitude (average)`)
+
+    df <-
+        left_join(df, lat_long, by = c('iso_code' = 'Alpha-3 code'))
+    
+    df <- df |>
+        mutate(date = as.Date(date, format = '%m/%d/%y'))
+    df$year = format(df$date, '%Y')
+    df$month = format(df$date, '%m')
+    df$day = format(df$date, '%d')
+    
+    max_tot_deaths_per_million <-
+        max(df$total_deaths_per_million, na.rm = TRUE)
+    df <- df |>
+        filter(!is.na(total_deaths_per_million)) |>
+        mutate(scaled_var = total_deaths_per_million / max_tot_deaths_per_million)
+    
+    return (df)
+}
+
 covid <- LoadDataset(verbose = FALSE)
 glimpse(covid)
 
