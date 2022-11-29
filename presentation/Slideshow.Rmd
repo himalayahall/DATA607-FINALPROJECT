@@ -1,38 +1,56 @@
 ---
-title: "DATA607 - COVID Data (Final Project)"
+title: "DATA607 - COVID Data"
 author: Josh Iden and Jawaid Hakim 
 date: March 22, 2005
 output:
      powerpoint_presentation:
-           reference_doc: data607-finalproject.pptx
+            reference_doc: data607-finalproject.pptx
+
     
 ---
 
 # Motivation
 
-- Use interesting COVID-19 data sets to visually explore the global prevalence of the pandemic
+- Use COVID-19 datasets to explore global pandemic stats
 
-- Build distributed data pipelines to efficiently capture daily updates
+- Explore relationships between COVID-19 prevalence and other datasets, e.g. mask policies, S&P500
 
-- Explore Spark as the engine for distributed data analytics
+# Data Acquisition - JHU CSSE [USA Daily Data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us)
 
-- Use Shiny for interactive data exploration
+![US Daily](images/COVIDS-DAILY-US-DATA.PNG)
 
-# Data Acquisition Journey
+# Data Acquisition - JHU CSSE [Global timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series)
 
-- Started with USA [JHU CSSE Novel Coronavirus (COVID-19) Daily Data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us)
+![Global Timeseries](images/COVIDS-DAILY-GLOBAL-DATA.PNG)
 
-- Added Global [JHU CSSE timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series)
+# Data Acquisition - [Our World In Data](https://ourworldindata.org/coronavirus) 
 
-- Added [Our World In Data](https://ourworldindata.org/coronavirus) to the data extraction pipeline 
+![OWID Comprehensive Timeseries](images/COVIDS-DAILY-OWID.PNG)
+
+# Data Wrangling - Strategy
+
+- Common data extraction scripts/functions across datasets
+
+    - Parallel processing
+    
+    - Table extraction (scraping) from HTML using Selenium/readr
+    
+    - Spark cluster interface
 
 # Data Wrangling Milestones
 
-- We built and leveraged a set of common data extraction scripts/functions across all datasets. These include parallel processing, attribute extraction from HTML using Selenium, and Spark cluster interface. See [tech stack](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/PROPOSAL.md#tech-stack-so-far) for details
+- Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). Implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account for higher limits.
 
-- Ran into Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). To get around rate limits we implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account which enables higher limits.
+- OWID dataset did not provide latitude/longitude variables which would be handy for map plots. Downloaded a separate dataset with country lat/long and (left-)joined with OWID for plotting on
 
-- OWID dataset did not provide latitude/longitude variables which would be handy for map plots. We downloaded a separate dataset with country lat/long and (left-)joined with OWID for plotting on
+# Data Exploration - Strategy
+
+- Shiny for interactive data exploration
+
+- Leaflet for map displays
+
+- Spark for data analytics
+
 
 # Tech Stack
 
