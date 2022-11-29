@@ -5,15 +5,20 @@ date: March 22, 2005
 output:
      powerpoint_presentation:
             reference_doc: data607-finalproject.pptx
-
-    
 ---
+
+```{r include=FALSE}
+library(tidyverse)
+library(GGally) #to plot ggpairs
+library(hrbrthemes)
+library(knitr)
+```
 
 # Motivation
 
-- Use COVID-19 datasets to explore global pandemic stats
+-   Use COVID-19 datasets to explore global pandemic stats
 
-- Explore relationships between COVID-19 prevalence and other datasets, e.g. mask policies, S&P500
+-   Explore relationships between COVID-19 prevalence and other datasets, e.g. mask policies, S&P500
 
 # Data Acquisition - JHU CSSE [USA Daily Data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us)
 
@@ -23,40 +28,162 @@ output:
 
 ![Global Timeseries](images/COVIDS-DAILY-GLOBAL-DATA.PNG)
 
-# Data Acquisition - [Our World In Data](https://ourworldindata.org/coronavirus) 
+# Data Acquisition - [Our World In Data](https://ourworldindata.org/coronavirus)
 
 ![OWID Comprehensive Timeseries](images/COVIDS-DAILY-OWID.PNG)
 
 # Data Wrangling - Strategy
 
-- Common data extraction scripts/functions across datasets
+-   Common data extraction scripts/functions across datasets
 
-    - Parallel processing
-    
-    - Table extraction (scraping) from HTML using Selenium/readr
-    
-    - Spark cluster interface
+    -   Parallel processing
+
+    -   Table extraction (scraping) from HTML using Selenium/readr
+
+    -   Spark cluster interface
 
 # Data Wrangling Milestones
 
-- Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). Implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account for higher limits.
+-   Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). Implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account for higher limits.
 
-- OWID dataset did not provide latitude/longitude variables which would be handy for map plots. Downloaded a separate dataset with country lat/long and (left-)joined with OWID for plotting on
+-   OWID dataset did not provide latitude/longitude variables which would be handy for map plots. Downloaded a separate dataset with country lat/long and (left-)joined with OWID for plotting on
 
 # Data Exploration - Strategy
 
-- Shiny for interactive data exploration
+-   Shiny for interactive data exploration
 
-- Leaflet for map displays
+-   Leaflet for map displays
 
-- Spark for data analytics
-
+-   Spark for data analytics
 
 # Tech Stack
 
-- **Rselenium**: chosen for it's headless browser capability and getting around potential issues with embedded JavaScript. Used to extract daily data URLs
-- **parallel**: chosen for efficiently processing remote data files using a local cluster
-- **readr**: reading remote/local CSVs
-- **leaflet**: render interactive global map
-- **Spark/sparklr**: proof-of-concept for performing EDAs on large datasets in a Spark cluster. Since cloud hosted Spark services are either fee-based or time-limited we used a local cluster
-- **AWS S3**: we looked into storing datasets on AWS S3 and leveraging Spark's built-in S3 connector. However, S3 storage rate-limits made  this impractical (20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests each month)
+-   **Rselenium**: chosen for it's headless browser capability and getting around potential issues with embedded JavaScript. Used to extract daily data URLs
+-   **parallel**: chosen for efficiently processing remote data files using a local cluster
+-   **readr**: reading remote/local CSVs
+-   **leaflet**: render interactive global map
+-   **Spark/sparklr**: proof-of-concept for performing EDAs on large datasets in a Spark cluster. Since cloud hosted Spark services are either fee-based or time-limited we used a local cluster
+-   **AWS S3**: we looked into storing datasets on AWS S3 and leveraging Spark's built-in S3 connector. However, S3 storage rate-limits made this impractical (20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests each month)
+
+# Exploratory Data Analysis
+
+## Combining the Covid and Mask Policy datasets
+
+```{r}
+# covid data
+covid.url <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/owid-covid-data.csv"
+covid <- read_csv(covid.url)
+
+# face covering data
+fc.url <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/source/face-covering-policies-covid.csv"
+fc <- read.csv(fc.url)
+
+# rename columns in fc data to match
+# convert date to date
+fc <- fc |>
+  rename(date = Day, iso_code = Code, location = Entity) |>
+  mutate(date = as.Date(date))
+
+# subset the covid data
+covid.sub1 <- covid |> select(c(1:4,9,14,49,67))
+
+kable(head(covid.sub1))
+```
+
+## Combining the Covid and Mask Policy datasets (cont'd)
+
+```{r}
+# combine covid and face covering datasets
+co.mask <- covid.sub1 |>
+  left_join(fc, by=c("iso_code","location", "date"))
+
+kable(head(co.mask))
+```
+
+## Face Covering Dataset
+
+Source: <https://ourworldindata.org/covid-face-coverings>
+
+Countries are grouped into five categories:
+
+0 = No policy\
+1 = Recommended\
+2 = Required in some specified shared/public spaces outside the home with other people present, or some situations when social distancing not possible\
+3 = Required in all shared/public spaces outside the home with other people present or all situations when social distancing not possible\
+4 = Required outside the home at all times regardless of location or presence of other people
+
+### Face Covering Dataset (cont'd)
+
+-   Aggregate - does not account for intra-country dynamics
+
+-   Mask policy is typically in response to Covid outbreaks
+
+## Avg. Mask Rates - Continent
+
+```{r include = FALSE}
+# read combined mask data
+md <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/mask-data/data/processed/owid/covid_mask_combined.csv"
+co.mask <- read_csv(md)
+```
+
+```{r}
+# avg mask rate by continent by year
+co.mask |> na.omit() |>
+  mutate(year = strftime(date, "%Y")) |>
+  group_by(continent, year) |>
+  summarize(avg_mask = mean(facial_coverings)) |>
+  ggplot(aes(x = year, y = avg_mask, group=1)) +
+  facet_wrap(~continent) +
+  geom_col(fill="red") +
+  labs(y = "avg", title = "Avg. Mask Rate - Continent")
+```
+
+## Avg. Mask Rates - G7
+
+```{r}
+# G7 countries
+countries <- c("Canada","France","Germany","Italy","Japan","United Kingdom","United States")
+
+# avg mask rate amongst G7 countries
+co.mask |> na.omit() |>
+  filter(location %in% countries) |>
+  mutate(year = strftime(date, "%Y")) |>
+  group_by(location, year) |>
+  summarize(avg_mask = mean(facial_coverings)) |>
+  ggplot(aes(x = year, y = avg_mask, group=1)) +
+  facet_wrap(~location) +
+  geom_col(fill="red") +
+  labs (y = "avg", title = "Avg. Mask Rate - G7 Countries")
+```
+
+## Excess Deaths by Avg. Mask Policy
+
+```{r}
+# total excess deaths by avg mask policy
+co.em |> na.omit() |>
+  group_by(location) |>
+  summarize(total_excess = sum(excess), avg_policy = mean(face)) |>
+  ggplot(aes(x=avg_policy, y=total_excess)) +
+  geom_point()
+```
+
+## New Deaths by Mask Policy
+
+```{r}
+# subset new deaths
+co.new <- co.mask |>
+  filter(!is.na(new_deaths)) |>
+  select(3,6,10) |>
+  rename(mask_policy = facial_coverings)
+
+# plot new deaths against mask policy
+boxplot(new_deaths ~ mask_policy, co.new, main="distribution by policy", xlab="mask policy", ylab="new deaths")
+```
+
+# Statistical Analysis
+
+Does average mask policy predict total excess mortality?
+
+The null hypothesis, $H_0$ - average mask policy *does not* predict total excess mortality. 
+
+The alternative hypothesis, $H_A$ - average mask policy *does* predict total mortality. 
