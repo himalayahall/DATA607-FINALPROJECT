@@ -52,6 +52,8 @@ library(knitr)
 
 ![OWID Comprehensive Timeseries](images/SHINY-APP.PNG)
 
+[Click to launch Shiny App](https://jhakim.shinyapps.io/owid-covid/)
+
 # Leaflet - interactive map visualization
 
 ![OWID Comprehensive Timeseries](images/LEAFLET-MAP.PNG)

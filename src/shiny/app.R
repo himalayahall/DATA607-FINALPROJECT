@@ -3,10 +3,6 @@ library(ggplot2)
 library(plotly)
 library(tidyverse)
 
-library(leaflet)
-library(leaflet.extras)
-library(leaflet.providers)
-
 #
 # Load data
 #
@@ -37,8 +33,8 @@ LoadDataset <- function(verbose = TRUE) {
     return (df)
 }
 
-covid <- LoadDataset(verbose = FALSE)
-glimpse(covid)
+covid_df <- LoadDataset(verbose = FALSE)
+glimpse(covid_df)
 
 ui <- fluidPage(titlePanel("COVID Metrics"),
                 
@@ -66,7 +62,7 @@ ui <- fluidPage(titlePanel("COVID Metrics"),
                         checkboxGroupInput(
                             "locations",
                             label = h3("Locations group"),
-                            choices = unique(covid$location),
+                            choices = unique(covid_df$location),
                             inline = TRUE,
                             selected = c(
                                 'United States',
@@ -85,7 +81,7 @@ ui <- fluidPage(titlePanel("COVID Metrics"),
 # Define server logic required to draw a histogram ----
 server <- function(input, output) {
     output$locationPlot <- renderPlotly({
-        covid |>
+        covid_df |>
             filter(location %in% input$locations) |>
             arrange(date) |>
             ggplot(aes(
