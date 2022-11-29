@@ -1,6 +1,7 @@
 library(shiny)
 library(ggplot2)
 library(plotly)
+library(tidyverse)
 
 library(leaflet)
 library(leaflet.extras)
