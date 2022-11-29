@@ -60,18 +60,26 @@ df
 Connect to local Spark standalone.
 
 ```{r connect-to-local-master}
-# sc <- Spark.ConnectLocal()
+sc <- Spark.ConnectLocal()
 ```
 
 Display web console.
 
 ```{r display-web-console}
-# spark_web(sc)
+spark_web(sc)
 ```
 
 ```{r}
-# sdf <- CopyToSpark(df)
+owid_path <- GetOWIDPath()
+owid_tbl <- spark_read_csv(sc, name = "OWID", path = owid_path, memory = FALSE)
+owid_summ <- owid_tbl |> group_by(location) |> summarize(count = n(),  mean = mean(total_deaths_per_million, na.rm = TRUE))
 # sdf
+```
+
+```{r}
+partitions <- owid_tbl %>%
+  select(location, total_deaths_per_million, median_age, population_density) %>% 
+  sdf_random_split(training = 0.75, test = 0.25, seed = 1099)
 ```
 
 ```{r}

@@ -8,12 +8,7 @@ library(readr)
 source("FilePaths.R")
 source("SparkFunctions.R")
 
-#
-# Load data
-#
-# Parameters:
-#   verbose: TRUE to print progress
-LoadDataset <- function(verbose = TRUE) {
+GetOWIDPath <- function() {
     file_name <-
         Output.GetOurWorldInDataFilePath()
     
@@ -21,6 +16,27 @@ LoadDataset <- function(verbose = TRUE) {
     
     file_path <-
         paste0(cwd, "/", file_name)
+    return (file_path)
+}
+
+GetLatLongPath <- function() {
+    file_name <-
+        Output.GetCountryLatLongFilePath()
+    
+    cwd <- getwd()
+    
+    file_path <-
+        paste0(cwd, "/", file_name)
+    return (file_path)
+}
+
+#
+# Load data
+#
+# Parameters:
+#   verbose: TRUE to print progress
+LoadDataset <- function(verbose = TRUE) {
+    file_path <-GetOWIDPath()
     df <- readr::read_csv(file = file_path, col_names = TRUE)
     
     lat_long <- LoadCountryLatLong()
@@ -40,15 +56,8 @@ LoadDataset <- function(verbose = TRUE) {
 }
 
 LoadCountryLatLong <- function() {
-    file_name <-
-        Output.GetCountryLatLongFilePath()
-    
-    cwd <- getwd()
-    
-    file_path <-
-        paste0(cwd, "/", file_name)
+    file_path <- GetLatLongPath()
     df <- readr::read_csv(file = file_path, col_names = TRUE)
-    
     df <- rename(df, Longitude = `Longitude (average)`)
     df <- rename(df, Latitude = `Latitude (average)`)
     
