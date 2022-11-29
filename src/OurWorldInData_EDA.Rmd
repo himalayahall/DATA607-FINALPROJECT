@@ -73,7 +73,7 @@ spark_web(sc)
 owid_path <- GetOWIDPath()
 owid_tbl <- spark_read_csv(sc, name = "OWID", path = owid_path, memory = FALSE)
 owid_summ <- owid_tbl |> group_by(location) |> summarize(count = n(),  mean = mean(total_deaths_per_million, na.rm = TRUE))
-# sdf
+dplyr::show_query(owid_summ)
 ```
 
 ```{r}
@@ -282,17 +282,13 @@ p <- ggplot(df_yf,
 p
 ```
 
-```{r}
-
-```
-
 Disconnect from cluster
 
 ```{r}
-# Spark.Disconnect(sc)
+Spark.Disconnect(sc)
 ```
 
 ```{r}
-# Spark.ShowJPS()
+#Spark.ShowJPS()
 ```
 
