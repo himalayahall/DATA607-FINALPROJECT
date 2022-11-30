@@ -111,35 +111,13 @@ Countries are grouped into five categories:
 
 ![](images/AVG_MASK_G7.png)
 
-## Excess Deaths by Avg. Mask Policy
+# Excess Deaths by Avg. Mask Policy
 
-```{r}
-# total excess deaths by avg mask policy
-co.em <- co.mask |>
-  filter(!is.na(excess_mortality_cumulative_per_million)) |>
-  select(1:4,7:10) |>
-  rename(excess = excess_mortality_cumulative_per_million,
-         face = facial_coverings) 
+![](images/EXCESS_POLICY_SCATTER.png)
 
-co.em |> na.omit() |>
-  group_by(location) |>
-  summarize(total_excess = max(excess), avg_policy = mean(face)) |>
-  ggplot(aes(x=avg_policy, y=total_excess)) +
-  geom_point()
-```
+# Excess Deaths by Mask Policy
 
-## New Deaths by Mask Policy
-
-```{r}
-# subset new deaths
-co.new <- co.mask |>
-  filter(!is.na(new_deaths)) |>
-  select(3,6,10) |>
-  rename(mask_policy = facial_coverings)
-
-# plot new deaths against mask policy
-boxplot(new_deaths ~ mask_policy, co.new, main="distribution by policy", xlab="mask policy", ylab="new deaths")
-```
+![](images/EXCESS_POLICY_BOXPLOT.png)
 
 # Statistical Analysis
 
