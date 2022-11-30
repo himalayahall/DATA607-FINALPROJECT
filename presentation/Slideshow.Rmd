@@ -1,0 +1,213 @@
+---
+title: "DATA607 - COVID Data"
+author: Josh Iden and Jawaid Hakim 
+date: March 22, 2005
+output:
+     powerpoint_presentation:
+            reference_doc: data607-finalproject.pptx
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(GGally) #to plot ggpairs
+library(hrbrthemes)
+library(knitr)
+```
+
+# Motivation
+
+-   Use COVID-19 datasets to explore global pandemic stats
+
+-   Explore relationships between COVID-19 prevalence and other datasets, e.g. mask policies, S&P500
+
+# Data Acquisition - JHU CSSE [USA Daily Data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us)
+
+![US Daily](images/COVIDS-DAILY-US-DATA.PNG)
+
+# Data Acquisition - JHU CSSE [Global timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series)
+
+![Global Timeseries](images/COVIDS-DAILY-GLOBAL-DATA.PNG)
+
+# Data Acquisition - [Our World In Data](https://ourworldindata.org/coronavirus)
+
+![OWID Comprehensive Timeseries](images/COVIDS-DAILY-OWID.PNG)
+
+# Data Wrangling - Strategy
+
+-   Common data extraction scripts/functions across datasets
+
+    -   Parallel processing
+
+    -   Table extraction (scraping) from HTML using Selenium/readr
+
+    -   Spark cluster interface
+
+# Data Wrangling Milestones
+
+-   Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). Implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account for higher limits.
+
+-   OWID dataset did not provide latitude/longitude variables which would be handy for map plots. Downloaded a separate dataset with country lat/long and (left-)joined with OWID for plotting on
+
+# Data Exploration - Strategy
+
+-   Shiny for interactive data exploration
+
+-   Leaflet for map displays
+
+-   Spark for data analytics
+
+# Tech Stack
+
+-   **Rselenium**: chosen for it's headless browser capability and getting around potential issues with embedded JavaScript. Used to extract daily data URLs
+-   **parallel**: chosen for efficiently processing remote data files using a local cluster
+-   **readr**: reading remote/local CSVs
+-   **leaflet**: render interactive global map
+-   **Spark/sparklr**: proof-of-concept for performing EDAs on large datasets in a Spark cluster. Since cloud hosted Spark services are either fee-based or time-limited we used a local cluster
+-   **AWS S3**: we looked into storing datasets on AWS S3 and leveraging Spark's built-in S3 connector. However, S3 storage rate-limits made this impractical (20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests each month)
+
+# Exploratory Data Analysis
+
+## Combining the Covid and Mask Policy datasets
+
+```{r}
+# covid data
+covid.url <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/owid-covid-data.csv"
+covid <- read_csv(covid.url)
+
+# face covering data
+fc.url <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/source/face-covering-policies-covid.csv"
+fc <- read.csv(fc.url)
+
+# rename columns in fc data to match
+# convert date to date
+fc <- fc |>
+  rename(date = Day, iso_code = Code, location = Entity) |>
+  mutate(date = as.Date(date))
+
+# subset the covid data
+covid.sub1 <- covid |> select(c(1:4,9,14,49,67))
+
+kable(head(covid.sub1))
+```
+
+## Combining the Covid and Mask Policy datasets (cont'd)
+
+<<<<<<< Updated upstream
+```{r}
+# combine covid and face covering datasets
+co.mask <- covid.sub1 |>
+  left_join(fc, by=c("iso_code","location", "date"))
+
+kable(head(co.mask))
+```
+
+## Face Covering Dataset
+=======
+# Face Covering Dataset
+>>>>>>> Stashed changes
+
+Source: <https://ourworldindata.org/covid-face-coverings>
+
+Countries are grouped into five categories:
+
+0 = No policy\
+1 = Recommended\
+2 = Required in some specified shared/public spaces outside the home with other people present, or some situations when social distancing not possible\
+3 = Required in all shared/public spaces outside the home with other people present or all situations when social distancing not possible\
+4 = Required outside the home at all times regardless of location or presence of other people
+
+# Face Covering Dataset (cont'd)
+
+-   Aggregate - does not account for intra-country dynamics
+
+-   Mask policy is typically in response to Covid outbreaks
+
+# Avg. Mask Rates - Continent
+
+![](images/AVG_MASK_CONTINENT.png)
+
+# Avg. Mask Rates - G7
+
+![](images/AVG_MASK_G7.png)
+
+# Excess Deaths by Avg. Mask Policy
+
+![](images/EXCESS_POLICY_SCATTER.png)
+# Excess Deaths by Mask Policy
+
+![](images/EXCESS_POLICY_BOXPLOT.png)
+
+# Statistical Analysis
+
+Does average mask policy predict total excess mortality?
+
+The null hypothesis, $H_0$ - average mask policy *does not* predict total excess mortality. 
+
+The alternative hypothesis, $H_A$ - average mask policy *does* predict total mortality. 
+
+## Relationship Between Variables
+
+```{r, message=FALSE, warning=FALSE}
+### Subsetting Covid data by Shiny app
+cols <- c('location',
+          'total_deaths_per_million',
+          'excess_mortality_cumulative_per_million',
+          'hosp_patients_per_million',
+          'total_cases_per_million',
+          'positive_rate',
+          'total_vaccinations_per_hundred',
+          'population_density',
+          'gdp_per_capita')
+
+# face mask data subset
+fc.sub <- fc |>
+  select(c("location","facial_coverings"))
+
+covid.sub1 <- covid |>
+  select(all_of(cols)) |>
+  na.omit() |>
+  left_join(fc.sub, by="location")
+
+# aggregate the data
+covid.sub2 <- covid.sub1 |>
+  group_by(location) |>
+  summarize(excess_mortality = max(excess_mortality_cumulative_per_million),
+            total_deaths = max(total_deaths_per_million),
+            total_cases = max(total_cases_per_million),
+            total_patients = max(hosp_patients_per_million),
+            positive_rate = mean(positive_rate),
+            total_vaccinations = max(total_vaccinations_per_hundred),
+            pop_density = mean(population_density),
+            gdp_per_capita = mean(gdp_per_capita),
+            mask_policy = mean(facial_coverings))
+
+ggpairs(covid.sub2[, 2:10])
+```
+## Fitting in a Linear Model
+
+```{r}
+model.1 <- lm(excess_mortality ~ mask_policy + pop_density + gdp_per_capita, covid.sub2)
+summary(model.1)
+```
+With an adjusted R-squared of 0.4048, this model only accounts for 40% of the variance in excess mortality. Mask policy also vastly exceeds < 0.05 p-score for significance, so it is not a significant factor. 
+
+## Improving the Model
+
+```{r}
+# dichotomous variable for mask policy below 2.5
+ggplot(covid.sub2, aes(x=mask_policy)) +
+  geom_histogram(bins = sqrt(nrow(covid.sub2))) +
+  labs(title="Distribution of Avg. Mask Policy Scores")
+```
+
+## Improving the Model? (cont'd)
+
+```{r}
+mask <- covid.sub2 |>
+  mutate(mask_policy = ifelse(mask_policy > mean(mask_policy), 1, 0))
+
+# linear model utilizing dichotomous variable
+model.2 <- lm(excess_mortality ~ mask_policy, mask)
+plot(model.2)
+```
+
