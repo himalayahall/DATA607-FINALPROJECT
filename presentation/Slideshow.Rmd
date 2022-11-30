@@ -135,22 +135,11 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 
 ![](images/MODEL_1_CODE.png)
 
-## Improving the Model
+# Interpreting the Model
 
-```{r}
-# dichotomous variable for mask policy below 2.5
-ggplot(covid.sub2, aes(x=mask_policy)) +
-  geom_histogram(bins = sqrt(nrow(covid.sub2))) +
-  labs(title="Distribution of Avg. Mask Policy Scores")
-```
+- p-value = 0.0264, significance
+- Adjusted R-squared = 0.037, accounts for very little variance
 
-## Improving the Model? (cont'd)
+# Residuals
 
-```{r}
-mask <- covid.sub2 |>
-  mutate(mask_policy = ifelse(mask_policy > mean(mask_policy), 1, 0))
-
-# linear model utilizing dichotomous variable
-model.2 <- lm(excess_mortality ~ mask_policy, mask)
-plot(model.2)
-```
+![](images/RESIDUALS_HIST.png)
