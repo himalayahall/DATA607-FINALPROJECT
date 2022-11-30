@@ -143,3 +143,21 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 # Residuals
 
 ![](images/RESIDUALS_HIST.png)
+
+# Residuals (cont'd)
+
+![](images/RESIDUALS_FULL.png)
+
+# Residuals (cont'd)
+
+- Linear
+- Non-Normal Distribution
+- Does Not Satisfy Homostedacticity (Non-Similar Variances)
+
+# Conclusion
+
+- Relationship exists
+- Not meaningful enough to predict
+- Possible reasons
+
+# Thank You!
