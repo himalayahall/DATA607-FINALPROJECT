@@ -131,14 +131,9 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 
 ![](images/EXCESS_MASK_LM_PLOT.png)
 
-## Fitting in a Linear Model
+# Fitting in a Linear Model
 
-```{r}
-model.1 <- lm(excess_mortality ~ mask_policy + pop_density + gdp_per_capita, covid.sub2)
-summary(model.1)
-```
-
-With an adjusted R-squared of 0.4048, this model only accounts for 40% of the variance in excess mortality. Mask policy also vastly exceeds \< 0.05 p-score for significance, so it is not a significant factor.
+![](images/MODEL_1_CODE.png)
 
 ## Improving the Model
 
