@@ -77,94 +77,39 @@ library(knitr)
 
 # Exploratory Data Analysis
 
-## Combining the Covid and Mask Policy datasets
+# Combining the Covid and Mask Policy datasets
 
-```{r}
-# covid data
-covid.url <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/owid-covid-data.csv"
-covid <- read_csv(covid.url)
+![](images/READ_COMBINE_CODE.png)
 
-# face covering data
-fc.url <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/source/face-covering-policies-covid.csv"
-fc <- read.csv(fc.url)
+# Combining the Covid and Mask Policy datasets (cont'd)
 
-# rename columns in fc data to match
-# convert date to date
-fc <- fc |>
-  rename(date = Day, iso_code = Code, location = Entity) |>
-  mutate(date = as.Date(date))
+![](images/READ_COMBINE_OUTPUT.png)
 
-# subset the covid data
-covid.sub1 <- covid |> select(c(1:4,9,14,49,67))
-
-kable(head(covid.sub1))
-```
-
-## Combining the Covid and Mask Policy datasets (cont'd)
-
-```{r}
-# combine covid and face covering datasets
-co.mask <- covid.sub1 |>
-  left_join(fc, by=c("iso_code","location", "date"))
-
-kable(head(co.mask))
-```
-
-## Face Covering Dataset
+# Face Covering Dataset
 
 Source: <https://ourworldindata.org/covid-face-coverings>
 
 Countries are grouped into five categories:
 
-0 = No policy\
-1 = Recommended\
-2 = Required in some specified shared/public spaces outside the home with other people present, or some situations when social distancing not possible\
-3 = Required in all shared/public spaces outside the home with other people present or all situations when social distancing not possible\
-4 = Required outside the home at all times regardless of location or presence of other people
+0 = No policy  
+1 = Recommended  
+2 = Required in some specified shared/public spaces outside the home with other people present, or some situations when social distancing not possible  
+3 = Required in all shared/public spaces outside the home with other people present or all situations when social distancing not possible  
+4 = Required outside the home at all times regardless of location or presence of other people  
 
-### Face Covering Dataset (cont'd)
+# Face Covering Dataset (cont'd)
 
 -   Aggregate - does not account for intra-country dynamics
 
 -   Mask policy is typically in response to Covid outbreaks
 
-## Avg. Mask Rates - Continent
+# Avg. Mask Rates - Continent
 
-```{r include = FALSE}
-# read combined mask data
-md <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/mask-data/data/processed/owid/covid_mask_combined.csv"
-co.mask <- read_csv(md)
-```
+![](images/AVG_MASK_CONTINENT.png)
 
-```{r}
-# avg mask rate by continent by year
-co.mask |> na.omit() |>
-  mutate(year = strftime(date, "%Y")) |>
-  group_by(continent, year) |>
-  summarize(avg_mask = mean(facial_coverings)) |>
-  ggplot(aes(x = year, y = avg_mask, group=1)) +
-  facet_wrap(~continent) +
-  geom_col(fill="red") +
-  labs(y = "avg", title = "Avg. Mask Rate - Continent")
-```
+# Avg. Mask Rates - G7
 
-## Avg. Mask Rates - G7
-
-```{r}
-# G7 countries
-countries <- c("Canada","France","Germany","Italy","Japan","United Kingdom","United States")
-
-# avg mask rate amongst G7 countries
-co.mask |> na.omit() |>
-  filter(location %in% countries) |>
-  mutate(year = strftime(date, "%Y")) |>
-  group_by(location, year) |>
-  summarize(avg_mask = mean(facial_coverings)) |>
-  ggplot(aes(x = year, y = avg_mask, group=1)) +
-  facet_wrap(~location) +
-  geom_col(fill="red") +
-  labs (y = "avg", title = "Avg. Mask Rate - G7 Countries")
-```
+![](images/AVG_MASK_G7.png)
 
 ## Excess Deaths by Avg. Mask Policy
 
