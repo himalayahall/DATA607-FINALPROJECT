@@ -127,44 +127,9 @@ The null hypothesis, $H_0$ - average mask policy *does not* predict total excess
 
 The alternative hypothesis, $H_A$ - average mask policy *does* predict total mortality.
 
-## Relationship Between Variables
+# Relationship Between Mask Policy and Excess Death
 
-```{r, message=FALSE, warning=FALSE}
-### Subsetting Covid data by Shiny app
-cols <- c('location',
-          'total_deaths_per_million',
-          'excess_mortality_cumulative_per_million',
-          'hosp_patients_per_million',
-          'total_cases_per_million',
-          'positive_rate',
-          'total_vaccinations_per_hundred',
-          'population_density',
-          'gdp_per_capita')
-
-# face mask data subset
-fc.sub <- fc |>
-  select(c("location","facial_coverings"))
-
-covid.sub1 <- covid |>
-  select(all_of(cols)) |>
-  na.omit() |>
-  left_join(fc.sub, by="location")
-
-# aggregate the data
-covid.sub2 <- covid.sub1 |>
-  group_by(location) |>
-  summarize(excess_mortality = max(excess_mortality_cumulative_per_million),
-            total_deaths = max(total_deaths_per_million),
-            total_cases = max(total_cases_per_million),
-            total_patients = max(hosp_patients_per_million),
-            positive_rate = mean(positive_rate),
-            total_vaccinations = max(total_vaccinations_per_hundred),
-            pop_density = mean(population_density),
-            gdp_per_capita = mean(gdp_per_capita),
-            mask_policy = mean(facial_coverings))
-
-ggpairs(covid.sub2[, 2:10])
-```
+![](images/EXCESS_MASK_LM_PLOT.png)
 
 ## Fitting in a Linear Model
 
