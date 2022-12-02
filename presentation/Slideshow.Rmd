@@ -4,7 +4,7 @@ author: Josh Iden and Jawaid Hakim
 date: March 22, 2005
 output:
      powerpoint_presentation:
-            reference_doc: data607-finalproject.pptx
+            reference_doc: data607-finalproject.potx
 ---
 
 ```{r include=FALSE}
@@ -42,19 +42,17 @@ library(knitr)
 
     -   Spark cluster interface
 
-# Data Wrangling Milestones
+# Data Wrangling - Challanges
 
 -   Github API [rate limits](https://docs.github.com/en/rest/overview/resources-in-the-rest-api#rate-limiting). Implemented [OAuth authentication](https://docs.github.com/en/developers/apps/building-oauth-apps/authorizing-oauth-apps) to access Github via a personal account for higher limits.
 
 -   OWID dataset did not provide latitude/longitude variables. Downloaded a separate dataset with country lat/long and (left) joined with OWID for plotting on map
 
-# Shiny - interactive data exploration
+# Interactive data exploration - [Shiny](https://jhakim.shinyapps.io/owid-covid/)
 
 ![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/SHINY-APP.PNG?raw=true)
 
-[Click to launch Shiny App](https://jhakim.shinyapps.io/owid-covid/)
-
-# Leaflet - interactive map visualization
+# Interactive map visualization - Leaflet
 
 ![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/LEAFLET-MAP.png?raw=true)
 
