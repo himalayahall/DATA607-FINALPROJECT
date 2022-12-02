@@ -22,15 +22,15 @@ library(knitr)
 
 # Data Acquisition - JHU CSSE [USA Daily Data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us)
 
-![US Daily](images/COVIDS-DAILY-US-DATA.PNG)
+![US Daily](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/COVIDS-DAILY-US-DATA.PNG?raw=true)
 
 # Data Acquisition - JHU CSSE [Global timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series)
 
-![Global Timeseries](images/COVIDS-DAILY-GLOBAL-DATA.PNG)
+![Global Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/COVIDS-DAILY-GLOBAL-DATA.PNG?raw=true)
 
 # Data Acquisition - [Our World In Data](https://ourworldindata.org/coronavirus)
 
-![OWID Comprehensive Timeseries](images/COVIDS-DAILY-OWID.PNG)
+![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/COVIDS-DAILY-OWID.PNG?raw=true)
 
 # Data Wrangling - Strategy
 
@@ -50,13 +50,13 @@ library(knitr)
 
 # Shiny - interactive data exploration
 
-![OWID Comprehensive Timeseries](images/SHINY-APP.PNG)
+![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/SHINY-APP.PNG?raw=true)
 
 [Click to launch Shiny App](https://jhakim.shinyapps.io/owid-covid/)
 
 # Leaflet - interactive map visualization
 
-![OWID Comprehensive Timeseries](images/LEAFLET-MAP.PNG)
+![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/LEAFLET-MAP.png?raw=true)
 
 # Spark - distributed (Scalable) query, analytics, ML
 
@@ -79,11 +79,11 @@ library(knitr)
 
 # Combining the Covid and Mask Policy datasets
 
-![](images/READ_COMBINE_CODE.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/READ_COMBINE_CODE.png?raw=true)
 
 # Combining the Covid and Mask Policy datasets (cont'd)
 
-![](images/READ_COMBINE_OUTPUT.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/READ_COMBINE_OUTPUT.png?raw=true)
 
 # Face Covering Dataset
 
@@ -105,19 +105,19 @@ Countries are grouped into five categories:
 
 # Avg. Mask Rates - Continent
 
-![](images/AVG_MASK_CONTINENT.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/AVG_MASK_CONTINENT.png?raw=true)
 
 # Avg. Mask Rates - G7
 
-![](images/AVG_MASK_G7.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/AVG_MASK_G7.png?raw=true)
 
 # Excess Deaths by Avg. Mask Policy
 
-![](images/EXCESS_POLICY_SCATTER.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/EXCESS_POLICY_SCATTER.png?raw=true)
 
 # Excess Deaths by Mask Policy
 
-![](images/EXCESS_POLICY_BOXPLOT.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/EXCESS_POLICY_BOXPLOT.png?raw=true)
 
 # Statistical Analysis
 
@@ -129,11 +129,11 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 
 # Relationship Between Mask Policy and Excess Death
 
-![](images/EXCESS_MASK_LM_PLOT.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/EXCESS_MASK_LM_PLOT.png?raw=true)
 
 # Fitting in a Linear Model
 
-![](images/MODEL_1_CODE.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/MODEL_1_CODE.png?raw=true)
 
 # Interpreting the Model
 
@@ -142,11 +142,11 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 
 # Residuals
 
-![](images/RESIDUALS_HIST.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/RESIDUALS_HIST.png?raw=true)
 
 # Residuals (cont'd)
 
-![](images/RESIDUALS_FULL.png)
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/RESIDUALS_FULL.png?raw=true)
 
 # Residuals (cont'd)
 
