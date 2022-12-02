@@ -61,7 +61,7 @@ library(knitr)
 ![Query](images/SPARK-DPLYR-SQL.PNG)
 
 # Spark - ML
-![KMEANS](images/SPARK-KMEANS-1.png)
+![K-MEANS](images/SPARK-KMEANS-1.png)
 
 # Spark - Predict
 ![](images/SPARK-KMEANS-2.png)
