@@ -45,7 +45,7 @@ ui <- fluidPage(titlePanel("COVID Metrics"),
                         
                         radioButtons(
                             "metric",
-                            label = h3("Mertic"),
+                            label = h3("Metric"),
                             choices = c(
                                 'total_deaths_per_million',
                                 'excess_mortality_cumulative_per_million',
