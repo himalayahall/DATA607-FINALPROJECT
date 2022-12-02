@@ -1,7 +1,7 @@
 ---
 title: "DATA607 - COVID Data"
 author: Josh Iden and Jawaid Hakim 
-date: March 22, 2005
+date: "`r Sys.Date()`"
 output:
      powerpoint_presentation:
             reference_doc: data607-finalproject.potx
@@ -34,13 +34,15 @@ library(knitr)
 
 # Data Wrangling - Strategy
 
--   Common data extraction scripts/functions across datasets
+Common data extraction scripts/functions across datasets to maximixe code resuse
 
-    -   Parallel processing
-
-    -   Table extraction (scraping) from HTML using Selenium/readr
-
-    -   Spark cluster interface
+-   Tech Stack
+    -   **Rselenium**: headless browser for getting around embedded JavaScript
+    -   **parallel**: chosen for efficiently processing remote data files using a local cluster
+    -   **readr**: reading remote/local CSVs
+    -   **Leaflet**: interactive global map
+    -   **Spark/sparklr**: proof-of-concept Spark cluster. Cloud hosted Spark services are fee-based or time-limited - used local cluster
+    -   **AWS S3**: AWS S3 rate-limits made it impractical
 
 # Data Wrangling - Challanges
 
@@ -56,26 +58,20 @@ library(knitr)
 
 ![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/LEAFLET-MAP.png?raw=true)
 
-# Spark - Query
+# Spark Query
 
-![Query](images/SPARK-DPLYR-SQL.PNG)
+![](images/SPARK-DPLYR-SQL.PNG)
 
-# Spark - ML
-![K-MEANS](images/SPARK-KMEANS-1.png)
+# Spark ML - K-Means Clustering
 
-# Spark - Predict
+![](images/SPARK-KMEANS-1.png)
+
+# Spark ML - K-means predictions
+
 ![](images/SPARK-KMEANS-2.png)
 
-![Plot](images/SPARK-KMEANS-3.png)
-
-# Tech Stack
-
--   **Rselenium**: headless browser for getting around embedded JavaScript
--   **parallel**: chosen for efficiently processing remote data files using a local cluster
--   **readr**: reading remote/local CSVs
--   **Leaflet**: interactive global map
--   **Spark/sparklr**: proof-of-concept Spark cluster. Cloud hosted Spark services are fee-based or time-limited - used local cluster
--   **AWS S3**: AWS S3 rate-limits made it impractical (20,000 GET Requests; 2,000 PUT, COPY, POST, or LIST Requests each month)
+# Spark ML - Plot K-means predictions
+![](images/SPARK-KMEANS-3.png)
 
 # Exploratory Data Analysis
 
@@ -93,11 +89,11 @@ Source: <https://ourworldindata.org/covid-face-coverings>
 
 Countries are grouped into five categories:
 
-0 = No policy  
-1 = Recommended  
-2 = Required in some specified shared/public spaces outside the home with other people present, or some situations when social distancing not possible  
-3 = Required in all shared/public spaces outside the home with other people present or all situations when social distancing not possible  
-4 = Required outside the home at all times regardless of location or presence of other people  
+0 = No policy\
+1 = Recommended\
+2 = Required in some specified shared/public spaces outside the home with other people present, or some situations when social distancing not possible\
+3 = Required in all shared/public spaces outside the home with other people present or all situations when social distancing not possible\
+4 = Required outside the home at all times regardless of location or presence of other people
 
 # Face Covering Dataset (cont'd)
 
@@ -139,8 +135,8 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 
 # Interpreting the Model
 
-- p-value = 0.0264, significance
-- Adjusted R-squared = 0.037, accounts for very little variance
+-   p-value = 0.0264, significance
+-   Adjusted R-squared = 0.037, accounts for very little variance
 
 # Residuals
 
@@ -152,14 +148,14 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 
 # Residuals (cont'd)
 
-- Linear
-- Non-Normal Distribution
-- Does Not Satisfy Homostedacticity (Non-Similar Variances)
+-   Linear
+-   Non-Normal Distribution
+-   Does Not Satisfy Homostedacticity (Non-Similar Variances)
 
 # Conclusion
 
-- Relationship exists
-- Not meaningful enough to predict
-- Possible reasons
+-   Relationship exists
+-   Not meaningful enough to predict
+-   Possible reasons
 
 # Thank You!
