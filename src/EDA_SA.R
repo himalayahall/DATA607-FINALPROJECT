@@ -39,8 +39,9 @@ ggplot(covid.sub1, aes(x=date, y=new_deaths, group=1)) +
 co.mask <- covid.sub1 |>
   left_join(fc, by=c("iso_code","location", "date"))
 
-# save file
-filepath <- "/Users/joshiden/Documents/Classes/CUNY SPS/Fall 2022/DATA 607/DATA-607/PROJECTS/DATA607-FINALPROJECT/data/processed/covid_mask_combined.csv"
+# save file - assumes current working directory is set to root folder of DATA607-FINALPROJECT
+#filepath <- "/Users/joshiden/Documents/Classes/CUNY SPS/Fall 2022/DATA 607/DATA-607/PROJECTS/DATA607-FINALPROJECT/data/processed/covid_mask_combined.csv"
+filepath <- "./data/processed/covid_mask_combined.csv"
 write_csv(co.mask, filepath)
 
 # read combined mask data
