@@ -58,13 +58,17 @@ library(knitr)
 
 ![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/LEAFLET-MAP.png?raw=true)
 
-# Spark - distributed (Scalable) query, analytics, ML
+# Spark - Query
 
-![Spark - Query](images/SPARK-DPLYR-SQL.PNG)
+![Query](images/SPARK-DPLYR-SQL.PNG)
 
-![Spark - Executors](images/SPARK-EXECUTORS.PNG)
+# Spark - ML
+![KMEANS](images/SPARK-KMEANS-1.png)
 
-![Spark - Completed Jobs](images/SPARK-COMPLETED-JOBS.PNG)
+# Spark - Predict
+![](images/SPARK-KMEANS-2.png)
+
+![Plot](images/SPARK-KMEANS-3.png)
 
 # Tech Stack
 
