@@ -71,13 +71,13 @@ spark_web(sc)
 
 ```{r}
 owid_path <- GetOWIDPath()
-owid_tbl <- spark_read_csv(sc, name = "OWID", path = owid_path, memory = FALSE)
-owid_summ <- owid_tbl |> group_by(location) |> summarize(count = n(),  mean = mean(total_deaths_per_million, na.rm = TRUE))
-dplyr::show_query(owid_summ)
+owid_spark_tbl <- spark_read_csv(sc, name = "OWID", path = owid_path, memory = FALSE)
+owid_spark_summ <- owid_spark_tbl |> group_by(location) |> summarize(count = n(),  mean = mean(total_deaths_per_million, na.rm = TRUE))
+dplyr::show_query(owid_spark_summ)
 ```
 
 ```{r}
-partitions <- owid_tbl %>%
+partitions <- owid_spark_tbl %>%
   select(location, total_deaths_per_million, median_age, population_density) %>% 
   sdf_random_split(training = 0.75, test = 0.25, seed = 1099)
 ```
@@ -280,6 +280,46 @@ p <- ggplot(df_yf,
   scale_y_log10() 
 
 p
+```
+
+```{r}
+df_spark_latest <- copy_to(sc, df_latest, overwrite = TRUE, MEMORY = TRUE)
+df_spark_latest <- df_spark_latest |> 
+    filter(! is.na(total_deaths_per_million)) |> 
+    filter(! is.na(human_development_index)) |> 
+    filter(! is.na(aged_65_older))
+
+kmeans_model <- df_spark_latest |>
+    ml_kmeans(k = 6, 
+              features = c('total_deaths_per_million', 'aged_65_older'))
+```
+
+```{r}
+predicted <- ml_predict(kmeans_model, df_spark_latest) %>%
+  collect()
+```
+
+```{r}
+predicted %>%
+  ggplot(aes(total_deaths_per_million, aged_65_older)) +
+  geom_point(aes(total_deaths_per_million, aged_65_older, col = factor(prediction + 1)),
+    size = 2, alpha = 0.5
+  ) +
+  geom_point(
+    data = kmeans_model$centers, aes(total_deaths_per_million, aged_65_older),
+    col = scales::muted(c("red", "green", "blue", "yellow", "magenta", "orange")),
+    pch = "x", size = 12
+  ) +
+  scale_color_discrete(
+    name = "Predicted Cluster",
+    labels = paste("Cluster", 1:6)
+  ) +
+  labs(
+    x = "Total Deaths per Million",
+    y = "Aged 65 or Older",
+    title = "K-Means Clustering",
+    subtitle = "Use Spark.ML to predict cluster membership with the OWID dataset."
+  )
 ```
 
 Disconnect from cluster
