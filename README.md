@@ -37,7 +37,3 @@
 - [x] Load data into Spark cluster, perform Spark/ML
 - [x] Create presentation slide deck using RMarkdown
 - [x] Presentation
-
-# Source code
-
-See https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/src/README.md
