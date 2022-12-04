@@ -46,4 +46,4 @@
 
 # Source code
 
-See https://github.com/himalayahall/DATA607-FINALPROJECT/blob/66f38ad19c66f4de4870b66f30fd7ea4061334be/src/README.md
+See https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/src/README.md
