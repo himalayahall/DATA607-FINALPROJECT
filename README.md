@@ -2,7 +2,7 @@
 
 ## Ideas
 
-1. Scrape Novel Coronavirus (COVID-19) [daily data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us) from JHU CSSE. Use parallel processing to efficiently scrape data (Jawaid)
+1. Scrape Novel Coronavirus (COVID-19) [daily data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us) from JHU CSSE. Use parallel processing to efficiently scrape data
 2. Scrape [timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series) data, also from JHU CSSE
 3. Scrape data from [Our World In Data](https://ourworldindata.org/coronavirus)
 4. Enrich data - (a) mask/vaccination mandates in school and workplace)
@@ -37,7 +37,9 @@
 - [x] Acquire enrichment data
 - [x] Create base helper Spark functions
 - [x] Create base script to scrape JHU CSSE data
-- [X] Create EDA using COVID and mask mandate data
+- [x] Create EDA using COVID and mask mandate data
+- [x] Get around Github rate limits using Okta authentication
+- [x] Enrich OWID data with latitude/longiture, tidy dataset
 - [x] Load data into Spark cluster, perform Spark/ML
 - [x] Create presentation slide deck using RMarkdown
 - [x] Presentation
