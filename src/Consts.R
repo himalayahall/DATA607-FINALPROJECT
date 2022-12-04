@@ -57,5 +57,11 @@ URL.OUR_WORLD_IN_DATA <-
     )
 
 FILE.COUNTRY_LAT_LONG <- "country_lat_long.csv"
+URL.COUNTRY_LAT_LONG <-
+    paste0(
+        "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/",
+        FILE.COUNTRY_LAT_LONG
+    )
+
 
 SELENIUM.PORT <- 4545L

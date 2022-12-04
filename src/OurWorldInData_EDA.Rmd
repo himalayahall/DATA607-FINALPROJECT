@@ -60,36 +60,32 @@ df
 Connect to local Spark standalone.
 
 ```{r connect-to-local-master}
-sc <- Spark.ConnectLocal()
+# sc <- Spark.ConnectLocal()
 ```
 
 Display web console.
 
 ```{r display-web-console}
-spark_web(sc)
+# spark_web(sc)
 ```
 
 ```{r}
-owid_path <- GetOWIDPath()
-owid_spark_tbl <- spark_read_csv(sc, name = "OWID", path = owid_path, memory = FALSE)
-owid_spark_summ <- owid_spark_tbl |> group_by(location) |> summarize(count = n(),  mean = mean(total_deaths_per_million, na.rm = TRUE))
-dplyr::show_query(owid_spark_summ)
+# owid_path <- GetOWIDPath()
+# owid_spark_tbl <- spark_read_csv(sc, name = "OWID", path = owid_path, memory = FALSE)
+# owid_spark_summ <- owid_spark_tbl |> group_by(location) |> summarize(count = n(),  mean = mean(total_deaths_per_million, na.rm = TRUE))
+# dplyr::show_query(owid_spark_summ)
 ```
 
 ```{r}
-partitions <- owid_spark_tbl %>%
-  select(location, total_deaths_per_million, median_age, population_density) %>% 
-  sdf_random_split(training = 0.75, test = 0.25, seed = 1099)
+# partitions <- owid_spark_tbl %>%
+#   select(location, total_deaths_per_million, median_age, population_density) %>% 
+#   sdf_random_split(training = 0.75, test = 0.25, seed = 1099)
 ```
 
 ```{r}
 # Have not investigated using Leaflet directly with Spark (does not work on first try), we have create R dataframe
 #system.time(df1 <-
 #                sdf_collect(sdf))    # collect Spark data in R dataframe
-```
-
-
-```{r}
 ```
 
 Load plot libraries
@@ -139,193 +135,50 @@ set.seed(1234)
 
 ```
 
-
 ```{r}
-# plot data
-rnd_locations <- sample(df$location, 10)
-
-p <-
-    df |> filter(location %in% rnd_locations) |>
-    arrange(date) |>
-    ggplot(aes(x = date, y = total_deaths_per_million, color = location)) +
-    geom_line(size = 0.5) +
-    scale_x_date(
-        date_breaks = "1 year",
-        date_minor_breaks = '1 month',
-        date_labels = "%Y"
-    ) +
-    scale_y_continuous(limits = c(0, 5000),
-                       labels = scales::label_comma()) +
-    labs(
-        title = "COVID Deaths Per Million",
-        subtitle = "2020 - 2023",
-        caption = "source: Our World In Data",
-        y = "Deaths"
-    ) +
-    theme_minimal()
-ggplotly(p)
+# df_spark_latest <- copy_to(sc, df_latest, overwrite = TRUE, MEMORY = TRUE)
+# df_spark_latest <- df_spark_latest |> 
+#     filter(! is.na(total_deaths_per_million)) |> 
+#     filter(! is.na(human_development_index)) |> 
+#     filter(! is.na(aged_65_older))
+# 
+# kmeans_model <- df_spark_latest |>
+#     ml_kmeans(k = 6, 
+#               features = c('total_deaths_per_million', 'aged_65_older'))
 ```
 
 ```{r}
-# plot data
-locations <- c('Germany', 'United Kingdom', 'United States', 'Japan', 'Canada', 'India')
-
-p <-
-    df |> 
-    filter(location %in% locations) |>
-    filter(! is.na(excess_mortality)) |>
-    ggplot(aes(x = date, y = excess_mortality_cumulative_per_million, color = location)) +
-    geom_line(size = 0.5) +
-    labs(
-        title = "Excess mortality: Cumulative number of deaths from all causes compared to projection based on
-previous years, per million people",
-        subtitle = "2020 - 2023",
-        caption = "source: Our World In Data"
-    ) +
-    theme_minimal()
-ggplotly(p)
-```
-
-
-Bring in S&P 500 data
-
-```{r}
-library(yfR)
-
-# set options for algorithm
-my_ticker <- '^GSPC'
-first_date <- "1950-01-01"
-last_date <- Sys.Date()
-
-# fetch data
-df_yf <- yf_get(tickers = my_ticker, 
-                first_date = first_date,
-                last_date = last_date)
-
-# output is a tibble with data
-glimpse(df_yf)
+# predicted <- ml_predict(kmeans_model, df_spark_latest) %>%
+#   collect()
 ```
 
 ```{r}
-min_date <- min(df$date)
-
-covid_df_yr <- df_yf |>
-    filter(ref_date >= min_date)
-
-glimpse(covid_df_yr)
-```
-
-```{r}
-library(ggplot2)
-
-p <- ggplot(covid_df_yr, aes(x = ref_date, y = price_adjusted)) + 
-  geom_line() +
-  labs(
-    title = paste0("SP500 Index Value (", 
-                   year(min(df_yf$ref_date)), ' - ',
-                   year(max(df_yf$ref_date)), ")"
-    ),
-    x = "Time", 
-    y = "Index Value",
-    caption = "Data from Yahoo Finance <https://finance.yahoo.com/>") + 
-  theme_light() + 
-  scale_y_log10() 
-
-p
-```
-
-```{r}
-group_df <- df |> filter(location == 'United States') 
-group_covid_sp <- left_join(group_df, covid_df_yr, by = c('date' = 'ref_date'))
-group_covid_sp
-```
-
-```{r}
-set.seed(20220713)
-
-n_tickers <- 10
-df_sp500 <- yf_index_composition("SP500")
-```
-
-```{r}
-rnd_tickers <- sample(df_sp500$ticker, n_tickers)
-
-cat(paste0("The selected tickers are: ", 
-           paste0(rnd_tickers, collapse = ", ")))
-```
-
-```{r}
-df_yf <- yf_get(tickers = rnd_tickers,
-                first_date = min_date,
-                last_date = Sys.Date())
-```
-
-```{r}
-library(ggplot2)
-
-p <- ggplot(df_yf, 
-            aes(x = ref_date, 
-                y = cumret_adjusted_prices, 
-                color = ticker)) + 
-  geom_line() +
-  labs(
-    title = paste0("SP500 Index Value (", 
-                   year(min(min_date)), ' - ',
-                   year(max(df_yf$ref_date)), ")"
-    ),
-    x = "Time", 
-    y = "Accumulated Return (from 100%)",
-    caption = "Data from Yahoo Finance <https://finance.yahoo.com/>") + 
-  theme_light() + 
-  scale_y_log10() 
-
-p
-```
-
-```{r}
-df_spark_latest <- copy_to(sc, df_latest, overwrite = TRUE, MEMORY = TRUE)
-df_spark_latest <- df_spark_latest |> 
-    filter(! is.na(total_deaths_per_million)) |> 
-    filter(! is.na(human_development_index)) |> 
-    filter(! is.na(aged_65_older))
-
-kmeans_model <- df_spark_latest |>
-    ml_kmeans(k = 6, 
-              features = c('total_deaths_per_million', 'aged_65_older'))
-```
-
-```{r}
-predicted <- ml_predict(kmeans_model, df_spark_latest) %>%
-  collect()
-```
-
-```{r}
-predicted %>%
-  ggplot(aes(total_deaths_per_million, aged_65_older)) +
-  geom_point(aes(total_deaths_per_million, aged_65_older, col = factor(prediction + 1)),
-    size = 2, alpha = 0.5
-  ) +
-  geom_point(
-    data = kmeans_model$centers, aes(total_deaths_per_million, aged_65_older),
-    col = scales::muted(c("red", "green", "blue", "yellow", "magenta", "orange")),
-    pch = "x", size = 12
-  ) +
-  scale_color_discrete(
-    name = "Predicted Cluster",
-    labels = paste("Cluster", 1:6)
-  ) +
-  labs(
-    x = "Total Deaths per Million",
-    y = "Aged 65 or Older",
-    title = "K-Means Clustering",
-    subtitle = "Use Spark.ML to predict cluster membership with the OWID dataset."
-  )
+# predicted %>%
+#   ggplot(aes(total_deaths_per_million, aged_65_older)) +
+#   geom_point(aes(total_deaths_per_million, aged_65_older, col = factor(prediction + 1)),
+#     size = 2, alpha = 0.5
+#   ) +
+#   geom_point(
+#     data = kmeans_model$centers, aes(total_deaths_per_million, aged_65_older),
+#     col = scales::muted(c("red", "green", "blue", "yellow", "magenta", "orange")),
+#     pch = "x", size = 12
+#   ) +
+#   scale_color_discrete(
+#     name = "Predicted Cluster",
+#     labels = paste("Cluster", 1:6)
+#   ) +
+#   labs(
+#     x = "Total Deaths per Million",
+#     y = "Aged 65 or Older",
+#     title = "K-Means Clustering",
+#     subtitle = "Use Spark.ML to predict cluster membership with the OWID dataset."
+#   )
 ```
 
 Disconnect from cluster
 
 ```{r}
-Spark.Disconnect(sc)
+# Spark.Disconnect(sc)
 ```
 
 ```{r}

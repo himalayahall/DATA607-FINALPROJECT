@@ -36,7 +36,7 @@ GetLatLongPath <- function() {
 # Parameters:
 #   verbose: TRUE to print progress
 LoadDataset <- function(verbose = TRUE) {
-    file_path <-GetOWIDPath()
+    file_path <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/owid-covid-data.csv"
     df <- readr::read_csv(file = file_path, col_names = TRUE)
     
     lat_long <- LoadCountryLatLong()
