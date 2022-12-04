@@ -1,11 +1,11 @@
 # DATA607 - Final Project
 
-## Ideas
+## Plan
 
 1. Scrape Novel Coronavirus (COVID-19) [daily data](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_daily_reports_us) from JHU CSSE. Use parallel processing to efficiently scrape data
 2. Scrape [timeseries](https://github.com/CSSEGISandData/COVID-19/tree/master/csse_covid_19_data/csse_covid_19_time_series) data, also from JHU CSSE
 3. Scrape data from [Our World In Data](https://ourworldindata.org/coronavirus)
-4. Enrich data - (a) mask/vaccination mandates in school and workplace)
+4. Enrich data - (a) mask/vaccination mandates in school and workplace
 5. [yRf](https://ropensci.org/blog/2022/07/26/package-yfr/) - S&P 500 dataset explored but not used for final presentation
 
 
@@ -14,15 +14,8 @@
 7. EDA using Spark SQL
    - There are many cloud hosted Spark deployments - e.g. [Databricks Apache Spark](https://www.databricks.com/spark/about) and [AWS EM](https://aws.amazon.com/emr/features/spark/) - but the free tiers are time-limited. However, we can leverage a standalone Spark cluster as proof-of-concept. The standalone version provides ALL the functionality needed for implementing EDAs leveraging Spark.
 8. EDA ideas
-  > Hypothesis: mask mandates had an impact on infection rates, hispitalizations, and deaths
-  
-  > Hypothesis: school closures had an impact on infection rates, hispitalizations, and deaths
-  
-  > Hypothesis: incomes levels were correlated with infection rates, hispitalizations, and deaths
-  
-  > Hypothesis: race/age/gender were correlated with infection rates, hispitalizations, and deaths
-  
- 9. Explore displaying data in maps using [Leaflet](https://rstudio.github.io/leaflet/)
+  > Hypothesis: mask mandates had an impact on infection rates, hispitalizations, and deaths  
+9. Explore displaying data in maps using [Leaflet](https://rstudio.github.io/leaflet/)
 
 # Folders
 1. data
@@ -30,6 +23,7 @@
    - processed: processed data
 2. src - R source code
 3. presentation - slideshow
+4. presentation/shiny - [Shiny App](https://jhakim.shinyapps.io/owid-covid/?_ga=2.79114263.2096543231.1670182409-1874399841.1669758579)
 
 # Milestones
 
