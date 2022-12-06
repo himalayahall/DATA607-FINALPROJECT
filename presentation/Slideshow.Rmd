@@ -136,7 +136,7 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 # Interpreting the Model
 
 -   p-value = 0.0264, significance
--   Adjusted R-squared = 0.037, accounts for very little variance
+-   Multiple R-squared = 0.046, accounts for very little variance
 
 # Residuals
 
