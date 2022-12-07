@@ -32,6 +32,10 @@ library(knitr)
 
 ![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/COVIDS-DAILY-OWID.PNG?raw=true)
 
+# Data Acquisition - [Our World In Data](https://ourworldindata.org/covid-face-coverings)
+
+![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/FACE-DAILY-OWID.PNG?raw=true)
+
 # Data Wrangling - Strategy
 
 Common data extraction scripts/functions across datasets to maximixe code resuse
