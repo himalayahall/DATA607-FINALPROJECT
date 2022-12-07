@@ -32,6 +32,10 @@ library(knitr)
 
 ![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/COVIDS-DAILY-OWID.PNG?raw=true)
 
+# Data Acquisition - [Our World In Data](https://ourworldindata.org/covid-face-coverings)
+
+![OWID Comprehensive Timeseries](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/FACE-DAILY-OWID.PNG?raw=true)
+
 # Data Wrangling - Strategy
 
 Common data extraction scripts/functions across datasets to maximixe code resuse
@@ -75,14 +79,6 @@ Common data extraction scripts/functions across datasets to maximixe code resuse
 
 # Exploratory Data Analysis
 
-# Combining the Covid and Mask Policy datasets
-
-![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/READ_COMBINE_CODE.png?raw=true)
-
-# Combining the Covid and Mask Policy datasets (cont'd)
-
-![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/READ_COMBINE_OUTPUT.png?raw=true)
-
 # Face Covering Dataset
 
 Source: <https://ourworldindata.org/covid-face-coverings>
@@ -100,6 +96,14 @@ Countries are grouped into five categories:
 -   Aggregate - does not account for intra-country dynamics
 
 -   Mask policy is typically in response to Covid outbreaks
+
+# Combining the Covid and Mask Policy datasets
+
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/READ_COMBINE_CODE.png?raw=true)
+
+# Combining the Covid and Mask Policy datasets (cont'd)
+
+![](https://github.com/himalayahall/DATA607-FINALPROJECT/blob/master/presentation/images/READ_COMBINE_OUTPUT.png?raw=true)
 
 # Avg. Mask Rates - Continent
 
@@ -136,7 +140,7 @@ The alternative hypothesis, $H_A$ - average mask policy *does* predict total mor
 # Interpreting the Model
 
 -   p-value = 0.0264, significance
--   Adjusted R-squared = 0.037, accounts for very little variance
+-   Multiple R-squared = 0.046, accounts for very little variance
 
 # Residuals
 
