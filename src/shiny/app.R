@@ -12,8 +12,6 @@ LoadDataset <- function(verbose = TRUE) {
     df <- readr::read_csv(file = "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/owid-covid-data.csv", col_names = TRUE)
     
     lat_long <- readr::read_csv(file = "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/country_lat_long.csv", col_names = TRUE)
-    lat_long <- rename(lat_long, Longitude = `Longitude (average)`)
-    lat_long <- rename(lat_long, Latitude = `Latitude (average)`)
 
     df <-
         left_join(df, lat_long, by = c('iso_code' = 'Alpha-3 code'))
