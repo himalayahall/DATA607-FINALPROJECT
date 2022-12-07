@@ -51,7 +51,6 @@ Select between USA or Global data
 is_global_data <- TRUE
 ```
 
-
 ```{r load-ts-dataset}
 df <- LoadDataset(verbose = TRUE)
 df

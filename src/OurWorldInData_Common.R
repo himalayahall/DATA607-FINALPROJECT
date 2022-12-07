@@ -56,11 +56,9 @@ LoadDataset <- function(verbose = TRUE) {
 }
 
 LoadCountryLatLong <- function() {
-    file_path <- GetLatLongPath()
+    file_path <- "https://raw.githubusercontent.com/himalayahall/DATA607-FINALPROJECT/master/data/processed/owid/country_lat_long.csv"
     df <- readr::read_csv(file = file_path, col_names = TRUE)
-    df <- rename(df, Longitude = `Longitude (average)`)
-    df <- rename(df, Latitude = `Latitude (average)`)
-    
+ 
     return (df)
 }
 
